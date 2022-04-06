@@ -129,6 +129,7 @@ def minimax(board):
 
     if (player(board) == 'X'):
         value = -inf
+        move_score = value
 
         while len(avaliable_actions) > 0:
             # Make a move
@@ -142,6 +143,7 @@ def minimax(board):
 
     else:
         value = inf
+        move_score = value
         
         while len(avaliable_actions) > 0:
             # Make a move
@@ -174,9 +176,7 @@ def max_score(board, alpha, beta):
 
         if move_score > value:
             value = move_score
-        
-        if move_score < beta:
-            break
+
 
     return value
 
@@ -195,11 +195,8 @@ def min_score(board, alpha, beta):
         new_board = result(board, test_move)
         move_score = max_score(new_board, alpha, beta)
 
-        if move_score < beta:
+        if move_score < value:
             value = move_score
-
-        if move_score > alpha:
-            break
 
     return value
 
