@@ -135,7 +135,7 @@ def minimax(board):
             # Make a move
             test_move = avaliable_actions.pop()
             new_board = result(board, test_move)
-            move_score = min_score(new_board, move_score, inf)
+            move_score = min_score(new_board, -inf, inf)
 
             if move_score > value:
                 move = test_move
@@ -149,7 +149,7 @@ def minimax(board):
             # Make a move
             test_move = avaliable_actions.pop()
             new_board = result(board, test_move)
-            move_score = max_score(new_board, -inf, move_score)
+            move_score = max_score(new_board, -inf, inf)
 
             if move_score < value:
                 move = test_move
@@ -174,8 +174,13 @@ def max_score(board, alpha, beta):
         new_board = result(board, test_move)
         move_score = min_score(new_board, alpha, beta)
 
+        alpha = max(move_score, alpha)
+
         if move_score > value:
             value = move_score
+
+        if (alpha >= beta):
+            break
 
 
     return value
@@ -195,8 +200,13 @@ def min_score(board, alpha, beta):
         new_board = result(board, test_move)
         move_score = max_score(new_board, alpha, beta)
 
+        beta = min(move_score, beta)
+
         if move_score < value:
             value = move_score
+
+        if (alpha >= beta):
+            break
 
     return value
 
