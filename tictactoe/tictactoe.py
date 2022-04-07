@@ -123,9 +123,12 @@ def minimax(board):
     Returns the optimal action for the current player on the board.
     """
 
-    move = (0, 0)
+    move = None
 
     avaliable_actions = actions(board)
+
+    alpha = -inf
+    beta = inf
 
     if (player(board) == 'X'):
         value = -inf
@@ -135,12 +138,11 @@ def minimax(board):
             # Make a move
             test_move = avaliable_actions.pop()
             new_board = result(board, test_move)
-            move_score = min_score(new_board, -inf, inf)
+            move_score = min_score(new_board, alpha, beta)
 
             if move_score > value:
                 move = test_move
                 value = move_score
-
     else:
         value = inf
         move_score = value
@@ -149,7 +151,7 @@ def minimax(board):
             # Make a move
             test_move = avaliable_actions.pop()
             new_board = result(board, test_move)
-            move_score = max_score(new_board, -inf, inf)
+            move_score = max_score(new_board, alpha, beta)
 
             if move_score < value:
                 move = test_move
@@ -163,7 +165,6 @@ def max_score(board, alpha, beta):
     if terminal(board):
         return utility(board)
 
-
     avaliable_actions = actions(board)
 
     value = -inf
@@ -175,13 +176,10 @@ def max_score(board, alpha, beta):
         move_score = min_score(new_board, alpha, beta)
 
         alpha = max(move_score, alpha)
-
-        if move_score > value:
-            value = move_score
+        value = max(move_score, value)
 
         if (alpha >= beta):
             break
-
 
     return value
 
@@ -201,9 +199,7 @@ def min_score(board, alpha, beta):
         move_score = max_score(new_board, alpha, beta)
 
         beta = min(move_score, beta)
-
-        if move_score < value:
-            value = move_score
+        value = min(move_score, value)
 
         if (alpha >= beta):
             break
